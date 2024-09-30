@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Validation\Rule;
 use App\Models\Exercise_types;
+use App\Models\schedules_types;
 use Illuminate\Http\Request;
 
 
@@ -35,7 +36,8 @@ $validated=$request->validate( [
                 'required',
                 'string',
                 Rule::in($exerciseTypes)
-            ],
+                            ],
+                            
         ]);
 
         Exercise_types::create(
@@ -53,7 +55,14 @@ $validated=$request->validate( [
 
         $scheduleTypes = Exercise_types::all();
 
-        return view("scheduletype", compact("scheduleTypes"));
+        $scheduleGroup = schedules_types::all();
+
+        return view("scheduletype", compact("scheduleTypes", "scheduleGroup"));
 
     }
+
+  
+
+
+    
 }

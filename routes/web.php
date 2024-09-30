@@ -9,6 +9,7 @@ use App\Http\Controllers\membersController;
 use App\Http\Controllers\PaymentsController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SchedulesController;
+use App\Http\Controllers\schedules_typesController;
 use App\Models\Attendance;
 use App\Models\Members;
 use App\Models\Payments;
@@ -145,6 +146,7 @@ Route::get('/scheduletypes', [ExerciseController::class, 'index'])->name('schedu
 
 Route::post('/scheduletypes', [ExerciseController::class, 'addtype'])->name('exersice.add');
 Route::get('/scheduletypes', [ExerciseController::class, 'getScheculeType'])->name('scheduletype.insert');
+Route::post('/scheduletypes/group', [schedules_typesController::class, 'storeSchedulesTypes'])->name('schedulegroup.data');
 Route::get('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'memberscheduleEditpage'])->name('memberscheduleedit.show');
 Route::put('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleUpdate'])->name('memberScheduleedit.update');
 Route::delete('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleDelete'])->name('memberscheduleeditpagedelete.delete');

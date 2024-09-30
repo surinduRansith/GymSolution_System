@@ -38,6 +38,10 @@ href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
 rel="stylesheet"
 />
 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+
 
 
   
@@ -99,5 +103,7 @@ update: function() {}
     });
 
 </script>
+
+
     </body>
 </html>
