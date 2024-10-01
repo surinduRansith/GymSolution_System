@@ -54,10 +54,7 @@
                             <tbody>
                           @foreach ($schedules as $schedule )
                           <tr>
-                            <td >{{$schedule->id}}</td>
-                            <td >{{$schedule->exercise_name}}</td>
-                            <td>{{$schedule->noofsets}} </td>
-                            <td>X {{$schedule->nooftime}}</td>
+                            <td >{{$schedule->scheduleName}}</td>
                            <td> <a href="{{route('memberscheduleedit.show',['id' => $member->id, 'scheduleid' => $schedule->id])}}" class="btn btn-sm btn-primary " ><i class="lni lni-pencil-alt"></i></button> </td>
                           
                            
@@ -73,7 +70,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Do You Want to Delete This Exercise  - {{$schedule->id}}</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Do You Want to Delete This Exercise  - {{$schedule->scheduleName}}</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -273,6 +270,9 @@
 @php
         $weightlist[] = $memberWeight->weight;
 
+        
+
+
     @endphp
   
 @endforeach
@@ -320,7 +320,7 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            {{-- <button type="button" class="btn btn-primary">Understood</button> --}}
+                           
                           </div>
                         </div>
                       </div>
@@ -386,28 +386,19 @@
                     <div class="col-sm-2">
                       <form action="{{route('updateshedule.insert',$member->id)}}" method="post">
                         @csrf
-                      <h6 class="mb-0">Shedule</h6>
+                      <h6 class="mb-0">Schedule</h6>
                     </div>
                     <div class="col-sm-4 text-secondary">
                         <select class="form-select select2  " aria-label="Default" name="exerciselist" >
-                            <option selected>Select Exercise</option>
+                            <option selected>Select Schedule</option>
                             @foreach ($scheduleTypes as $exercise )
-                            <option value="{{$exercise->id}}" >{{$exercise->name}}</option>
+                            <option value="{{$exercise->id}}" >{{$exercise->scheduleName}}</option>
                             @endforeach
                           </select>
                     
                           
                     </div>
-                    <div class="col-sm-2 text-secondary">
-                      <input type="number" class="form-control" id="numberofsets"  name="numberofsets">
-                      @error('numberofsets')
-                      <p style="color: red">{{ $message }}</p>
-                      @enderror
-                  </div>
-                  <div class="col-sm-2 text-secondary">
-                    <input type="number" class="form-control " id="numberoftime"  name="numberoftime" value="3">
-                    
-                </div>
+                   
                 <div class="col-sm-1 text-secondary">
                   <button type="submit" class="btn btn-warm">add</button>
               </div>

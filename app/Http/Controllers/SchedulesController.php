@@ -35,35 +35,8 @@ class SchedulesController extends Controller
 
     // }
 
-    public function storeSchedule(Request $request, $id)
-    {
-        $members=Members::all()->where('id',$id)->first();
-        if (!$members) {
-            return redirect()->back()->with('error', 'Member not found.');
-        }
 
-        $exercise = exercise_types::all('name');
    
-        $request->validate( [
-            'exerciselist' => 'required',
-            'numberofsets' => 'required',
-            'numberoftime' => 'required'
-        ]);
-
-        $exercise = exercise_types::all()->where('id', $request->exerciselist)->first();
-        if (!$exercise) {
-            return redirect()->back()->with('error', 'Exercise not found.');
-        }
-
-        Schedules::create([
-            'member_id' => $members->id,
-            'scheduleType_id' => $exercise->id,
-            'noofsets' => $request->numberofsets,
-            'nooftime' => $request->numberoftime,
-        ]);
-
-        return redirect()->route('members.profile', ['id' => $id])->with('success', 'Schedule created successfully.');
-    }
 
     public function memberscheduleUpdate(Request $request, $id,$scheduleid){
 

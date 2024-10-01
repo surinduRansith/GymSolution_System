@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Members;
 use App\Models\Schedules;
 use App\Models\Exercise_types;
+use App\Models\Members_schedules;
+use App\Models\schedules_types;
 use App\Models\Weight;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -77,30 +79,28 @@ class MembersController extends Controller
 
        
             $members=Members::all()->where('id',$id);
-            $scheduleTypes = Exercise_types::all();
-            $schedules = Schedules::join('members', 'schedules.member_id', '=', 'members.id')
-            ->join('exercise_types', 'schedules.scheduleType_id', '=', 'exercise_types.id')
-            ->select('schedules.*', 'exercise_types.name as exercise_name','schedules.noofsets','schedules.nooftime' )->where('schedules.member_id', $id)
-            ->get();
+            $scheduleTypes = schedules_types::all();
+            $schedules = Members_schedules::join('schedules_types', 'members_schedules.scheduleType_id', '=', 'schedules_types.id')
+        ->select('schedules_types.*', 'schedules_types.scheduleName as scheduleName' )->where('members_schedules.member_id', $id)
+        ->get();
 
             $memberWeights = Weight::all()->where('member_id',$id);
 
             $memberweightlatestUpdate = Weight::where('member_id', $id)->latest('updated_at')->first();
            
-            $formattedUpdateDate = $memberweightlatestUpdate 
-            ? Carbon::parse($memberweightlatestUpdate->updated_at)->toDateString() 
-            : null;
+            $formattedUpdateDate = $memberweightlatestUpdate
+    ? Carbon::parse($memberweightlatestUpdate->updated_at)->toDateString() 
+    : null;
 
-            $now = now();
-            $today = now()->toDateString();
-            $formattedDateTime = now()->format('Y-m-d');
+    $now = Carbon::now(); // Current date and time
+    $formattedDateTime = $now->format('Y-m-d');
+         
+    $monthName = Carbon::parse($memberweightlatestUpdate->updated_at)->format('F');
 
-            $dateDifference = $formattedUpdateDate
-            ? $now->diffInDays(Carbon::parse($formattedUpdateDate))
-            : null;
-            
+    $dateDifference = Carbon::parse($formattedUpdateDate)->diffInDays($now);
 
-            return view('memberprof', compact('members','scheduleTypes','schedules','memberWeights','formattedUpdateDate','dateDifference'));
+
+            return view('memberprof', compact('members','scheduleTypes','schedules','memberWeights','formattedUpdateDate','dateDifference','monthName'));
 
     }
 
@@ -186,15 +186,20 @@ class MembersController extends Controller
 
 
    
-    public function memberscheduleEditpage(Request $request, $id,$sheduleid){
+    public function memberscheduleEditpage(Request $request, $id,$scheduleid){
 
-        $schedules = Schedules::join('members', 'schedules.member_id', '=', 'members.id')
-        ->join('exercise_types', 'schedules.scheduleType_id', '=', 'exercise_types.id')
-        ->select('schedules.*', 'schedules.id','schedules.member_id','exercise_types.name as exercise_name','schedules.noofsets','schedules.nooftime' )->where('schedules.id', $sheduleid)
+        $schedules = schedules_types::join('members_schedules', 'schedules_types.id', '=', 'members_schedules.scheduleType_id')
+        ->select('schedules_types.*', 'schedules_types.scheduleName as scheduleName','members_schedules.*' )
+        ->where('members_schedules.member_id', $id)
+        ->where('schedules_types.id', $scheduleid)
+        ->get();
+
+        $countofexercises = Schedules::where('member_id', $id)
+        ->where('scheduleType_id', $scheduleid)
         ->get();
        
-
-        return view('memberscheduleedit',compact('schedules'));
+       
+        return view('memberscheduleedit',compact('schedules','countofexercises'));
     }
 
     public function deleteMemberDetails($id){
@@ -220,5 +225,45 @@ class MembersController extends Controller
     
         return redirect()->route('members.profile', ['id' => $id])->with('success', 'User status updated successfully!');
     }
+
+    public function storeSchedule(Request $request, $id,$scheduleid)
+    {
+
+        $members=Members::all()->where('id',$id)->first();
+
+        $schedule = schedules_types::all()->where('id', $scheduleid)->first();
+
+        $exercises = json_decode($schedule->scheduleType_names);
+
+        $validate=[];
+        foreach ($exercises as $index => $exercise) {
+            $validate["exercisename{$index}"] = 'required';  // Validate exercise name
+            $validate["noofsets{$index}"] = 'required|integer';  // Validate number of sets
+            $validate["nooftime{$index}"] = 'required|integer';  // Validate number of time
+        }
+    
+        // Validate request data based on dynamic rules
+        $validatedData = $request->validate($validate);
+    
+        // Loop through each exercise and create schedule
+        foreach ($exercises as $index => $exercise) {
+            Schedules::create([
+                'member_id' => $members->id,
+                'scheduleType_id' => $scheduleid,
+                'exercise_name' => $validatedData["exercisename{$index}"],
+                'noofsets' => $validatedData["noofsets{$index}"],
+                'nooftime' => $validatedData["nooftime{$index}"],
+            ]);
+        }
+
+      
+    
+        return redirect()->route('members.profile', ['id' => $members->id])->with('success', 'Schedule updated successfully.');
+    }
+
+
+
+
+ 
     
 }

@@ -8,34 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('schedules', function (Blueprint $table) {
+        Schema::create('members_schedules', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('scheduleType_id');
-            $table->string('exercise_name');
-            $table->integer('noofsets');
-            $table->integer('nooftime');
             $table->timestamps();
 
             
             $table->foreign('member_id')->references('id')->on('members')->onDelete('cascade');
             $table->foreign('scheduleType_id')->references('id')->on('schedules_types')->onDelete('cascade');
-
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('schedules');
+        Schema::dropIfExists('members_schedules');
     }
 };

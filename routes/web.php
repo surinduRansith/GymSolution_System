@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ExerciseController;
+use App\Http\Controllers\Members_schedulesController;
 use App\Http\Controllers\memberScheduleListController;
 use App\Http\Controllers\membersController;
 use App\Http\Controllers\PaymentsController;
@@ -136,7 +137,8 @@ Route::put('/members/{id}/status', [MembersController::class, 'statusUpdate'])->
 
 Route::post('/members/{id}', [ExerciseController::class, 'addtype'])->name('scheduletype.add');
 
-Route::post('/members/{id}', [SchedulesController::class, 'storeSchedule'])->name('updateshedule.insert');
+
+Route::post('/members/{id}', [Members_schedulesController::class, 'insertSchedule'])->name('updateshedule.insert');
 
 Route::get('/members/{id}/edit', [MembersController::class,'EditMember'])->name('members.edit');
 
@@ -145,13 +147,27 @@ Route::put('/members/{id}/edit', [MembersController::class,'EditMemberDetails'])
 Route::get('/scheduletypes', [ExerciseController::class, 'index'])->name('scheduletype.insert');
 
 Route::post('/scheduletypes', [ExerciseController::class, 'addtype'])->name('exersice.add');
+
 Route::get('/scheduletypes', [ExerciseController::class, 'getScheculeType'])->name('scheduletype.insert');
+
 Route::post('/scheduletypes/group', [schedules_typesController::class, 'storeSchedulesTypes'])->name('schedulegroup.data');
+
+//Route::get('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'memberscheduleEditpage'])->name('memberscheduleedit.show');
+
 Route::get('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'memberscheduleEditpage'])->name('memberscheduleedit.show');
-Route::put('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleUpdate'])->name('memberScheduleedit.update');
+
+Route::post('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'storeSchedule'])->name('updateshedulemember.insert');
+
+//Route::post('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'storeSchedule'])->name('updateshedule.insert');
+
+//Route::put('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleUpdate'])->name('memberScheduleedit.update');
+
 Route::delete('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleDelete'])->name('memberscheduleeditpagedelete.delete');
-Route::delete('/members/{id}/schedule/{scheduleid}', [SchedulesController::class, 'memberscheduleDelete'])->name('memberscheduledelete.delete');
+
+Route::delete('/members/{id}/schedule/{scheduleid}', [Members_schedulesController::class, 'memberscheduleDelete'])->name('memberscheduledelete.delete');
+
 Route::get('/members/{id}/schedule', [SchedulesController::class, 'memberAllscheduleDelete'])->name('memberallscheduledelete.delete');
+
 Route::get('/members/{id}/generatepdf', [memberScheduleListController::class,'memberScheduleList'])->name('memberschedulelist.data');
 
 Route::get('/members/{id}/payment', [PaymentsController::class,'ShowPaymentPage'])->name('paymentpage.data');
