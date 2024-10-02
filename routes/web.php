@@ -149,7 +149,7 @@ Route::get('/scheduletypes', [ExerciseController::class, 'index'])->name('schedu
 Route::post('/scheduletypes', [ExerciseController::class, 'addtype'])->name('exersice.add');
 
 Route::get('/scheduletypes', [ExerciseController::class, 'getScheculeType'])->name('scheduletype.insert');
-
+Route::delete('/scheduletypes/{id}', [schedules_typesController::class, 'destroySchdulegroup'])->name('scheduletype.delete');
 Route::post('/scheduletypes/group', [schedules_typesController::class, 'storeSchedulesTypes'])->name('schedulegroup.data');
 
 //Route::get('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'memberscheduleEditpage'])->name('memberscheduleedit.show');

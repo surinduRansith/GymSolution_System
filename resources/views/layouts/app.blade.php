@@ -43,7 +43,7 @@ rel="stylesheet"
 
 
 
-
+@livewireStyles
   
 <script src="https://cdn.datatables.net/2.1.2/js/dataTables.js"></script>
     <link rel="stylesheet" href="{{url('CSS/sidebar.css')}}">
@@ -104,6 +104,6 @@ update: function() {}
 
 </script>
 
-
+@livewireScripts
     </body>
 </html>

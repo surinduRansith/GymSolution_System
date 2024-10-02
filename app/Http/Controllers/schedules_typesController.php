@@ -24,4 +24,10 @@ class schedules_typesController extends Controller
         $scheduletypes->save();
         return redirect()->route("scheduletype.insert")->with("success","Schedule Add Successfully");
     }
+
+
+    public function destroySchdulegroup($id){
+        schedules_types::find($id)->delete();
+        return redirect()->route("scheduletype.insert")->with("success","Schedule Delete Successfully");
+    }
 }

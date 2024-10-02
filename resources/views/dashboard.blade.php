@@ -7,6 +7,7 @@ $datesArray = [];
 $dailycount=[];
     @endphp
 <x-app-layout>
+
     @section('content')
     
  
@@ -165,9 +166,12 @@ $dailycount=[];
                     </div>
                   </div>
             </div>
-
+            
         </div>
+        
+      
 
+       
     
 @endsection
 </x-app-layout>
