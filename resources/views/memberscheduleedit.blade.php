@@ -40,6 +40,9 @@
 <td><input type="number" class="form-control" value="{{ empty($countofexercises[$index]->noofsets) ? old('noofsets'.$index) : $countofexercises[$index]->noofsets }}" name="noofsets{{$index}}"
    {{empty($countofexercises[$index]->noofsets) ? '' : "disabled" }}
   > </td>
+  @error('noofsets'.$index)
+  <p style="color: red">{{ $message }}</p>
+@enderror
 <td><input type="number" class="form-control" value="{{ empty($countofexercises[$index]->nooftime) ? '3' : $countofexercises[$index]->nooftime }}" name="nooftime{{$index}}" 
   {{empty($countofexercises[$index]->nooftime) ? '' : "disabled" }}
   > </td>
