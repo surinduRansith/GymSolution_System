@@ -8,6 +8,7 @@ use App\Models\Members_schedules;
 use App\Models\schedules_types;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class Members_schedulesController extends Controller
 {
@@ -19,8 +20,17 @@ class Members_schedulesController extends Controller
         if (!$members) {
             return redirect()->back()->with('error', 'Member not found.');
         }
+
+        $schedule_types = schedules_types::all();
+        
+      
+        $schedule_Names = $schedule_types->pluck('id')->toArray();
+        
         $request->validate( [
-            'exerciselist' => 'required',
+            'exerciselist' => [
+                'required',
+                Rule::in($schedule_Names)
+            ],
           
         ]);
 

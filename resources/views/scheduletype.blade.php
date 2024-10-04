@@ -103,7 +103,7 @@ $exerciseTypes = ['Chest Exercises',
   </table>
   <form action="{{route('schedulegroup.data')}}" method="post">
     @csrf
-    <div class="row">
+    <div class="row pt-5">
       
       <div class="col-2">
         <!-- Button trigger modal -->

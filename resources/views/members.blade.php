@@ -68,7 +68,7 @@
 
 </td>
     <td>
-      <a href="{{route('members.edit',$member->id)}}" class="btn btn-primary btn-sm"><i class="lni lni-pencil-alt"></i></button></a>
+      <a href="{{route('members.edit',$member->id)}}" class="btn btn-primary btn-sm {{$member->status=='inactive'?'disabled':''}}"  ><i class="lni lni-pencil-alt"></i></button></a>
 
     </td>
     <td>

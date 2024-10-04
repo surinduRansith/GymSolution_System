@@ -251,7 +251,7 @@
                       
                     </form>
 
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop" {{$member->status=='inactive'?'disabled':''}}>
                       Weight History
                     </button>
                     
@@ -261,7 +261,7 @@
                         <div class="modal-content">
                           <div class="modal-header">
                             <h1 class="modal-title fs-5" id="staticBackdropLabel">Weight Progress Chart</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
                           </div>
                           <div class="modal-body">
                             <div class="container">
@@ -389,7 +389,7 @@
                       <h6 class="mb-0">Schedule</h6>
                     </div>
                     <div class="col-sm-4 text-secondary">
-                        <select class="form-select select2  " aria-label="Default" name="exerciselist" >
+                        <select class="form-select select2  " aria-label="Default" name="exerciselist" {{$member->status=='inactive'?'disabled':''}}>
                             <option selected>Select Schedule</option>
                             @foreach ($scheduleTypes as $exercise )
                             <option value="{{$exercise->id}}" >{{$exercise->scheduleName}}</option>
@@ -400,10 +400,15 @@
                     </div>
                    
                 <div class="col-sm-1 text-secondary">
-                  <button type="submit" class="btn btn-warm">add</button>
+                  <button type="submit" class="btn btn-warm" {{$member->status=='inactive'?'disabled':''}}>add</button>
+
+                  
               </div>
             </form>
                   </div>
+                  @error('exerciselist')
+                    <p class="text-danger">{{ $message }}</p>
+                  @enderror
                   <hr>
                  
                   <div class="row">
@@ -461,15 +466,16 @@
                       </form>
                       @endif
                     </div>
-               
+                    
+                  
                
                   @endforeach
                   <hr>
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-info " href="{{route('members.edit',$member->id)}}">Edit</a>
-                      <a class="btn btn-success " href="{{route('paymentpage.data',$member->id)}}">Add Payment</a>
-                      <a class="btn btn-warning " href="{{route('attendance.show',$member->id)}}">Attendance</a>
+                      <a class="btn btn-info {{$member->status=='inactive'?'disabled':''}}" href="{{route('members.edit',$member->id)}}" >Edit</a>
+                      <a class="btn btn-success {{$member->status=='inactive'?'disabled':''}}" href="{{route('paymentpage.data',$member->id)}}" >Add Payment</a>
+                      <a class="btn btn-warning {{$member->status=='inactive'?'disabled':''}}" href="{{route('attendance.show',$member->id)}}" >Attendance</a>
                     </div>
                   </div>
                 </div>
