@@ -101,6 +101,7 @@
                           
                           <tr>
                            <td colspan="6">
+                            
                             <a href="{{route('memberschedulelist.data',['id' => $member->id])}}" class="btn btn-sm btn-primary " ><i class="lni lni-download"></i></a>
 
                                  <!-- Button trigger modal -->

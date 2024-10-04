@@ -12,25 +12,25 @@
             </div>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a href="{{route('members.data')}}" class="sidebar-link">
+                    <a href="{{route('members.data')}}" class="sidebar-link" >
                         <i class="lni lni-user"></i>
                         <span>Members</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                  <a href="{{route('scheduletype.insert')}}" class="sidebar-link">
+                  <a href="{{route('scheduletype.insert')}}" class="sidebar-link" >
                     <i class="lni lni-dumbbell"></i>
                       <span>Schedule Types</span>
                   </a>
               </li>
                 <li class="sidebar-item">
-                    <a href="{{route('paymentreport.show')}}" class="sidebar-link">
+                    <a href="{{route('paymentreport.show')}}" class="sidebar-link" >
                       <i class="lni lni-invest-monitor"></i>
                         <span>Payments</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="{{route('attendancereport.show')}}" class="sidebar-link">
+                    <a href="{{route('attendancereport.show')}}" class="sidebar-link" >
                         <i class="fa-solid fa-calendar-days"></i>
                         <span>Attendance</span>
                     </a>
@@ -43,10 +43,10 @@
                     </a>
                     <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                         <li class="sidebar-item">
-                        <a href="{{route('loginshow.page')}}" class="sidebar-link">Login</a>
+                        <a href="{{route('loginshow.page')}}" class="sidebar-link"  >Login</a>
                         </li>
                         <li class="sidebar-item">
-                            <a href="{{route('registration.page')}}" class="sidebar-link">Register</a>
+                            <a href="{{route('registration.page')}}" class="sidebar-link" >Register</a>
                         </li>
                     </ul>
                 </li>
@@ -64,23 +64,23 @@
                             </a>
                             <ul id="multi-two" class="sidebar-dropdown list-unstyled collapse">
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link">Link 1</a>
+                                    <a href="#" class="sidebar-link" >Link 1</a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="#" class="sidebar-link">Link 2</a>
+                                    <a href="#" class="sidebar-link" >Link 2</a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="#" class="sidebar-link" >
                         <i class="lni lni-popup"></i>
                         <span>Notification</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="#" class="sidebar-link" >
                         <i class="lni lni-cog"></i>
                         <span>Setting</span>
                     </a>
@@ -97,12 +97,12 @@
                             @csrf
                     <a href="route('logout')"
                     onclick="event.preventDefault();
-                                this.closest('form').submit();" class="sidebar-link">Logout</a>
+                                this.closest('form').submit();" class="sidebar-link"  >Logout</a>
                     </li>
     
                 </form>
                     <li class="sidebar-item">
-                        <a href="{{route('profile.edit')}}" class="sidebar-link">Profile</a>
+                        <a href="{{route('profile.edit')}}" class="sidebar-link"  >Profile</a>
                     </li>
                 </ul>
                 </li>

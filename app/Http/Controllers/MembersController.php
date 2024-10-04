@@ -18,47 +18,47 @@ class MembersController extends Controller
   
   
 
-    public function createMember(Request   $request ){
+    // public function createMember(Request   $request ){
 
         
-        $nextId = DB::table('members')->max('id') + 1;
+    //     $nextId = DB::table('members')->max('id') + 1;
 
-        $request->validate([
-            'userName' => 'required|string|max:255',
-            'gender' => 'required|string|in:male,female',
-            'dob' => 'required|date',
-            'mobileNumber' => 'required|min:10|max:10',
-            'membershiptype' =>'required|string|in:Monthly,Annual', 
-            'height' =>  'required|integer',
-            'weight' =>  'required|integer',
-            'startdate' =>'required|date',
-            'enddate' =>'required|date',
+    //     $request->validate([
+    //         'userName' => 'required|string|max:255',
+    //         'gender' => 'required|string|in:male,female',
+    //         'dob' => 'required|date',
+    //         'mobileNumber' => 'required|min:10|max:10',
+    //         'membershiptype' =>'required|string|in:Monthly,Annual', 
+    //         'height' =>  'required|integer',
+    //         'weight' =>  'required|integer',
+    //         'startdate' =>'required|date',
+    //         'enddate' =>'required|date',
 
-        ]);
+    //     ]);
 
         
 
-        Members::create([
-            'name' => $request->userName,
-            'gender'=> $request->gender,
-            'dob'=> $request->dob,
-            'mobile'=> $request->mobileNumber,
-            'membershiptype'=>$request->membershiptype,
-            'height'=>  $request->height,
-            'weight'=>  $request->weight,
-            'startDate'=>$request->startdate,
-            'ExpireDate'=>$request->enddate
-        ]);
+    //     Members::create([
+    //         'name' => $request->userName,
+    //         'gender'=> $request->gender,
+    //         'dob'=> $request->dob,
+    //         'mobile'=> $request->mobileNumber,
+    //         'membershiptype'=>$request->membershiptype,
+    //         'height'=>  $request->height,
+    //         'weight'=>  $request->weight,
+    //         'startDate'=>$request->startdate,
+    //         'ExpireDate'=>$request->enddate
+    //     ]);
 
-        Weight::create([
-            'member_id'=>$nextId,
-            'weight'=>$request->weight,
-        ]);
+    //     Weight::create([
+    //         'member_id'=>$nextId,
+    //         'weight'=>$request->weight,
+    //     ]);
 
 
-        return redirect()->route('members.data')->with('success', 'Data inserted successfully!');
+    //     return redirect()->route('members.data')->with('success', 'Data inserted successfully!');
         
-    }
+    // }
 
 
 

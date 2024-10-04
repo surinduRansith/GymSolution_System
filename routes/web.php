@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentsController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\schedules_typesController;
+use App\Livewire\ShowMembers;
 use App\Models\Attendance;
 use App\Models\Members;
 use App\Models\Payments;
@@ -118,11 +119,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     
-    Route::get('/members', [MembersController::class,'ShowMembers'])->name('members.data');
+    Route::get('/members', ShowMembers::class)->name('members.data');
     Route::get('/form', function () {
         return view('form',);
     })->name('membersregistration.data');
-    Route::post('/form', [MembersController::class, 'createMember'])->name('insert.data');
+   // Route::post('/form', [MembersController::class, 'createMember'])->name('insert.data');
 
 
 
