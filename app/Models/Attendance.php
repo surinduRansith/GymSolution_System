@@ -15,4 +15,7 @@ class Attendance extends Model
         'attendancedate',
         'attendance',
      ];
+
+
+     
 }

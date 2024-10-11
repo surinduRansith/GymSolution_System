@@ -19,7 +19,7 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
         <div class="col-6">
         <div class="input-group mb-3 " >
           <span class="input-group-text" id="basic-addon1">User Name</span>
-          <input type="text" wire:model="userName" class="form-control" id="userName" aria-describedby="emailHelp" name="userName" value="{{old('userName')}}">
+          <input type="text" wire:model.live="userName" class="form-control" id="userName" aria-describedby="emailHelp" name="userName" value="{{old('userName')}}">
         </div>
         @error('userName')
         <p style="color: red">{{ $message }}</p>
@@ -28,7 +28,7 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
         <div class="col-6">
          <div class="input-group mb-3 " >
           <span class="input-group-text" id="basic-addon1">Date of Birth</span>
-          <input type="date" wire:model="dob" class="form-control" id="dob" name="dob" value="{{old('dob')}}">
+          <input type="date" wire:model.live="dob" class="form-control" id="dob" name="dob" value="{{old('dob')}}">
           
         </div>
         @error('dob')
@@ -41,7 +41,7 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
       <div class="col-6">
           <div class="input-group mb-3 " >
             <span class="input-group-text" id="basic-addon1">Gender</span>
-            <select class="form-select form-select-sm" aria-label="Default" name="gender" wire:model="gender" >
+            <select class="form-select form-select-sm" aria-label="Default" name="gender" wire:model.live="gender" >
                 <option selected>Please select Gender</option>
                 <option value="male" {{old('gender')=='male'?'selected':''}}>Male</option>
                 <option value="female" {{old('gender')=='female'?'selected':''}}>Female</option>
@@ -54,7 +54,7 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
       <div class="col-6">
        <div class="input-group mb-3 " >
         <span class="input-group-text" id="basic-addon1">Mobile Number</span>
-        <input type="number" class="form-control" id="mobileNumber" name="mobileNumber" wire:model="mobileNumber" value="{{old('mobileNumber')}}" >
+        <input type="number" class="form-control" id="mobileNumber" name="mobileNumber" wire:model.live="mobileNumber" value="{{old('mobileNumber')}}" >
         
       </div>
       @error('mobileNumber')
@@ -68,7 +68,7 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
         <div class="col-6">
           <div class="input-group mb-3 " >
             <span class="input-group-text " id="basic-addon1">Membership Type</span>
-            <select class="form-select form-select-sm" aria-label="Default" name="membershiptype" wire:model="membershiptype" >
+            <select class="form-select form-select-sm" aria-label="Default" name="membershiptype" wire:model.live="membershiptype" >
                 <option >Please select membership type</option>
                 <option value="Monthly" {{old('membershiptype')=='Monthly'?'selected':''}}>Monthly</option>
                 <option value="Annual" {{old('membershiptype')=='Annual'?'selected':''}}>Annual</option>
@@ -82,9 +82,10 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
   
     <div class="col-6">
       <div class="input-group mb-3">
-        <input type="number" wire:model="height" class="form-control" placeholder="Height" aria-label="height"id="height" name="height" value="{{old('height')}}" >
-        <span class="input-group-text">@</span>
-        <input type="text" wire:model="weight" class="form-control" placeholder="Weight" aria-label="weight" id="weight" name="weight" value="{{old('weight')}}">
+        <span class="input-group-text">Height(cm)</span>
+        <input type="number" wire:model.live="height" class="form-control"  aria-label="height"id="height" name="height" value="{{old('height')}}" >
+        <span class="input-group-text">Weight</span>
+        <input type="text" wire:model.live="weight" class="form-control"  aria-label="weight" id="weight" name="weight" value="{{old('weight')}}">
       </div>
     
     </div>
@@ -111,7 +112,7 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
     <div class="col-6">
        <div class="input-group mb-3 " >
         <span class="input-group-text" id="basic-addon1">Start Date</span>
-        <input type="date" wire:model="startdate" class="form-control" id="startdate" name="startdate" value="{{$currentDateFormatted}}">
+        <input type="date" wire:model.live="startdate" class="form-control" id="startdate" name="startdate" value="{{$currentDateFormatted}}">
       </div>
       @error('startdate')
       <p style="color: red">{{ $message }}</p>
@@ -120,7 +121,7 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
     <div class="col-6">
       <div class="input-group mb-3 " >
        <span class="input-group-text" id="basic-addon1">Expire Date</span>
-       <input type="date" class="form-control" id="enddate" name="enddate" wire:model="enddate" value="{{$nextMonthDateFormatted}}">
+       <input type="date" class="form-control" id="enddate" name="enddate" wire:model.live="enddate" value="{{$nextMonthDateFormatted}}">
       </div>
       @error('enddate')
       <p style="color: red">{{ $message }}</p>
@@ -131,5 +132,6 @@ $nextMonthDateFormatted = $nextMonthDate->format('Y-m-d'); // or any other forma
       <button type="submit" class="btn btn-primary"> Submit  <span class="spinner-border spinner-border-sm" aria-hidden="true" wire:loading></span>
       </div> </button>
    
-    </div>
     </form>
+    </div>
+    

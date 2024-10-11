@@ -47,93 +47,7 @@
                         <h4> {{$member->name}}</h4>  
                     </div>
                     <div class="mt-3 ">
-                          @if (count($schedules) > 0)
-                          <table class="table  table-striped table-responsive-sm ">
-                            <thead>
-                            </thead>
-                            <tbody>
-                          @foreach ($schedules as $schedule )
-                          <tr>
-                            <td >{{$schedule->scheduleName}}</td>
-                           <td> <a href="{{route('memberscheduleedit.show',['id' => $member->id, 'scheduleid' => $schedule->id])}}" class="btn btn-sm btn-primary " ><i class="lni lni-pencil-alt"></i></button> </td>
-                          
-                           
-                            <td> 
-                              
-                               <!-- Button trigger modal -->
-<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{$schedule->id}}">
-  <i class="lni lni-trash-can"></i>
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal{{$schedule->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Do You Want to Delete This Exercise  - {{$schedule->scheduleName}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <form action="{{route('memberscheduledelete.delete',['id' => $member->id, 'scheduleid' => $schedule->id])}}" method="POST">
-          
-          @csrf
-          @method('Delete')
-        <button type="submit" class="btn btn-danger">Yes</button>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
-                              
-                              
-                              
-                              
-                              
-                              
-                              </td>
-                          </tr>
-                        
-                          @endforeach
-                          
-                          <tr>
-                           <td colspan="6">
-                            
-                            <a href="{{route('memberschedulelist.data',['id' => $member->id])}}" class="btn btn-sm btn-primary " ><i class="lni lni-download"></i></a>
-
-                                 <!-- Button trigger modal -->
-<button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#scheduleall">
-  <i class="lni lni-trash-can"></i>
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="scheduleall" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Do You Want to Delete This Schedule</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">No</button>
-        <a href="{{route('memberallscheduledelete.delete',['id' => $member->id])}}" class="btn btn-sm btn-danger "><i class="lni lni-eraser"></i></i></a>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>
-                            
-                             </td>
-                          </tr>
-                          </tbody>
-                          </table>
-                          @endif
+                          <livewire:member-scheduleadd-table :id="$member->id"/>
                      
                       
                      
@@ -384,32 +298,17 @@
                   </div>
                   <hr>
                   <div class="row">
-                    <div class="col-sm-2">
-                      <form action="{{route('updateshedule.insert',$member->id)}}" method="post">
-                        @csrf
+                    <div class="col-sm-3">
                       <h6 class="mb-0">Schedule</h6>
                     </div>
-                    <div class="col-sm-4 text-secondary">
-                        <select class="form-select select2  " aria-label="Default" name="exerciselist" {{$member->status=='inactive'?'disabled':''}}>
-                            <option selected>Select Schedule</option>
-                            @foreach ($scheduleTypes as $exercise )
-                            <option value="{{$exercise->id}}" >{{$exercise->scheduleName}}</option>
-                            @endforeach
-                          </select>
-                    
-                          
+                    <div class="col-sm-8 text-secondary">
+                      @if($member->status=='active')
+                      <livewire:member-scheduleadd :id="$member->id"/>
+                      @else
+                      No Schedule
+                      @endif
                     </div>
-                   
-                <div class="col-sm-1 text-secondary">
-                  <button type="submit" class="btn btn-warm" {{$member->status=='inactive'?'disabled':''}}>add</button>
-
-                  
-              </div>
-            </form>
                   </div>
-                  @error('exerciselist')
-                    <p class="text-danger">{{ $message }}</p>
-                  @enderror
                   <hr>
                  
                   <div class="row">
@@ -496,6 +395,7 @@
         </script>
 <script>
   $('.select2').select2();
+  
 </script>
 
     

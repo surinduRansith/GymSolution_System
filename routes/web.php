@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentsController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\schedules_typesController;
+use App\Livewire\AttendanceCalender;
 use App\Livewire\ShowMembers;
 use App\Models\Attendance;
 use App\Models\Members;
@@ -136,10 +137,10 @@ Route::put('/members/{id}', [MembersController::class,'weightUpdate'])->name('we
 Route::put('/members/{id}/status', [MembersController::class, 'statusUpdate'])->name('memberstatus.update');
 
 
-Route::post('/members/{id}', [ExerciseController::class, 'addtype'])->name('scheduletype.add');
+//Route::post('/members/{id}', [ExerciseController::class, 'addtype'])->name('scheduletype.add');
 
 
-Route::post('/members/{id}', [Members_schedulesController::class, 'insertSchedule'])->name('updateshedule.insert');
+//Route::post('/members/{id}', [Members_schedulesController::class, 'insertSchedule'])->name('updateshedule.insert');
 
 Route::get('/members/{id}/edit', [MembersController::class,'EditMember'])->name('members.edit');
 
@@ -176,7 +177,7 @@ Route::post('/members/{id}/payment', [PaymentsController::class,'addPayment'])->
 Route::get('/members/{id}/payment/{month}', [PaymentsController::class,'deletePaymentPage'])->name('paymentpage.delete');
 Route::delete('/members/{id}/payment/{payment}', [PaymentsController::class,'deletePaymentPageAnnual'])->name('paymentpageAnnual.delete');
 Route::get('/members/{id}/attendance', [AttendanceController::class,'show'])->name('attendance.show');
-Route::post('/members/{id}/attendance', [AttendanceController::class,'markAttendance'])->name('attendance.insert');
+//Route::post('/members/{id}/attendance', [AttendanceController::class,'markAttendance'])->name('attendance.insert');
 
 Route::get('/attendancereport', function (Request $request) {
 

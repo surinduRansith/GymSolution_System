@@ -28,6 +28,8 @@ class FormRegistration extends Component
     #[Rule('required|date')]
     public $enddate;
 
+   
+
     public function submit(){
 
         $this->validate();
@@ -55,8 +57,11 @@ class FormRegistration extends Component
                 return redirect()->route('members.data')->with('success', 'Data inserted successfully!');
 
     }
+ 
     public function render()
     {
         return view('livewire.form-registration');
     }
+
+
 }

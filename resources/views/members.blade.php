@@ -32,6 +32,8 @@
 
 <div class="table-responsive">
   <livewire:show-members/>
+
+
 </div>
 
 
@@ -48,4 +50,5 @@ $(document).ready(function() {
     });
 });
 </script>
+
 @endsection

@@ -91,9 +91,10 @@
 
   <div class="col-6">
     <div class="input-group mb-3">
-      <input type="number" class="form-control" placeholder="Height" aria-label="height"id="height" name="height" value="{{$member->height}}" >
-      <span class="input-group-text">@</span>
-      <input type="text" class="form-control" placeholder="Weight" aria-label="weight" id="weight" name="weight" value="{{$member->weight}}">
+      <span class="input-group-text">Height(cm)</span>
+      <input type="number" disabled class="form-control" placeholder="Height" aria-label="height"id="height" name="height" value="{{$member->height}}" >
+      <span class="input-group-text">Weight</span>
+      <input type="text" disabled class="form-control" placeholder="Weight" aria-label="weight" id="weight" name="weight" value="{{$member->weight}}">
     </div>
   
   </div>

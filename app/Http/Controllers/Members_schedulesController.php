@@ -13,34 +13,34 @@ use Illuminate\Validation\Rule;
 class Members_schedulesController extends Controller
 {
   
-    public function insertSchedule(Request $request,$id){
+    // public function insertSchedule(Request $request,$id){
 
-        $members=Members::all()->where('id',$id)->first();
+    //     $members=Members::all()->where('id',$id)->first();
    
-        if (!$members) {
-            return redirect()->back()->with('error', 'Member not found.');
-        }
+    //     if (!$members) {
+    //         return redirect()->back()->with('error', 'Member not found.');
+    //     }
 
-        $schedule_types = schedules_types::all();
+    //     $schedule_types = schedules_types::all();
         
       
-        $schedule_Names = $schedule_types->pluck('id')->toArray();
+    //     $schedule_Names = $schedule_types->pluck('id')->toArray();
         
-        $request->validate( [
-            'exerciselist' => [
-                'required',
-                Rule::in($schedule_Names)
-            ],
+    //     $request->validate( [
+    //         'exerciselist' => [
+    //             'required',
+    //             Rule::in($schedule_Names)
+    //         ],
           
-        ]);
+    //     ]);
 
-        Members_schedules::create([
-            'member_id' => $members->id,
-            'scheduleType_id' => $request->input('exerciselist'),
-        ]);
+    //     Members_schedules::create([
+    //         'member_id' => $members->id,
+    //         'scheduleType_id' => $request->input('exerciselist'),
+    //     ]);
 
-        return redirect()->route('members.profile', ['id' => $id])->with('success', 'Schedule created successfully.');
-    }
+    //     return redirect()->route('members.profile', ['id' => $id])->with('success', 'Schedule created successfully.');
+    // }
 
 
     public function getmemberSchedules(Request $request, $id){
