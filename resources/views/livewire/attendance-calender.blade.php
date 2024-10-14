@@ -36,7 +36,7 @@ use Illuminate\Support\Carbon;
             </h2>
             <br>
             
-            <table class="table table-striped">
+            <table class="table table-striped  ">
                 <thead>
                     <tr>
                         @foreach ($month['daysArray'] as $day)
@@ -58,11 +58,11 @@ use Illuminate\Support\Carbon;
                                 $msg = false;
 
                                 if (in_array($formattedDate, $month['mark'])) {
-                                    $add = 'table-primary';
+                                    $add = 'table-primary ';
                                     $msg = true;
                                     $modal = '';
                                 } elseif ($formattedDate == $today) {
-                                    $add = 'table-success';
+                                    $add = 'table-success ';
                                     $modal = 'modal';
                                     $msg = false;
                                 }

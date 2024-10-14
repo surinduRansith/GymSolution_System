@@ -24,7 +24,7 @@
 <!-- /Breadcrumb -->
 
 
-<livewire:attendance-calender :id="$member->id"  />
+    <livewire:attendance-calender :id="$member->id"  />
 
 
 @endsection
