@@ -185,8 +185,9 @@
 @php
         $weightlist[] = $memberWeight->weight;
 
-        
+        $weightlistdate[] = $memberWeight->created_at->format('M');
 
+      
 
     @endphp
   
@@ -208,10 +209,7 @@
                                     new Chart(ctx, {
                                         type: 'line',
                                         data: {
-                                            labels: [
-                                                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                                                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-                                            ],
+                                            labels: @json($weightlistdate),
                                             datasets: [{
                                                 label: 'Member Weights',
                                                 data: @json($weightlist), // Make sure this is a valid array

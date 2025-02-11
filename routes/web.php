@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentsController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\schedules_typesController;
+use App\Livewire\Apiusers;
 use App\Livewire\AttendanceCalender;
 use App\Livewire\ShowMembers;
 use App\Models\Attendance;
@@ -36,13 +37,23 @@ Route::get('/dashboard', function (Request $request) {
 
 
     $monthsnames = [
-        "January", "February", "March", "April", "May", "June", 
-        "July", "August", "September", "October", "November", "December"
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
     ];
-    $monthindex=Carbon::now()->month-1;
-    
-    if($request->input('monthcount')=='add'){
-        $monthindex=$request->input('month');
+    $monthindex = Carbon::now()->month - 1;
+
+    if ($request->input('monthcount') == 'add') {
+        $monthindex = $request->input('month');
 
 
 
@@ -53,9 +64,9 @@ Route::get('/dashboard', function (Request $request) {
         }
 
     }
-    if($request->input('monthcount')=='min'){
+    if ($request->input('monthcount') == 'min') {
 
-        $monthindex=$request->input('month');
+        $monthindex = $request->input('month');
 
 
 
@@ -66,15 +77,15 @@ Route::get('/dashboard', function (Request $request) {
         }
 
     }
-    
-    $targetMonth = $monthindex+1;
+
+    $targetMonth = $monthindex + 1;
     $year = Carbon::now()->year;  // Default to the current year
 
     // Create first and last day of the month based on the provided or default month
     $firstDayOfMonth = Carbon::create($year, $targetMonth)->startOfMonth()->toDateString();
     $lastDayOfMonth = Carbon::create($year, $targetMonth)->endOfMonth()->toDateString();
 
-    
+
     // Fetch attendance data
     $userAttendancecount = DB::table('attendances')
         ->select(DB::raw('MONTH(attendancedate) as month_number, attendancedate, COUNT(id) as daily_count'))
@@ -82,16 +93,16 @@ Route::get('/dashboard', function (Request $request) {
         ->groupBy('attendancedate')
         ->orderBy('attendancedate', 'asc')
         ->get();
-    
-        $monthlyincome = Payments::where('created_at', '>=', $firstDayOfMonth)->where('created_at', '<=', $lastDayOfMonth)->sum('amount');
 
-    return view('dashboard', compact('userscount','monthsnames','monthindex','userscountactive','userscountinactive','userAttendancecount','monthlyincome'));
+    $monthlyincome = Payments::where('created_at', '>=', $firstDayOfMonth)->where('created_at', '<=', $lastDayOfMonth)->sum('amount');
+
+    return view('dashboard', compact('userscount', 'monthsnames', 'monthindex', 'userscountactive', 'userscountinactive', 'userAttendancecount', 'monthlyincome'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::post('/dashboard/{targetMonth}', function ( Request $request,$targetMonth) {
+Route::post('/dashboard/{targetMonth}', function (Request $request, $targetMonth) {
 
-    
+
     $targetMonth = $request->input('month', Carbon::now()->month);
     $year = Carbon::now()->year;  // Default to the current year
 
@@ -113,235 +124,234 @@ Route::post('/dashboard/{targetMonth}', function ( Request $request,$targetMonth
 
 
 Route::middleware('auth')->group(function () {
- 
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    
+
     Route::get('/members', ShowMembers::class)->name('members.data');
     Route::get('/form', function () {
-        return view('form',);
+        return view('form', );
     })->name('membersregistration.data');
-   // Route::post('/form', [MembersController::class, 'createMember'])->name('insert.data');
+    // Route::post('/form', [MembersController::class, 'createMember'])->name('insert.data');
 
 
 
 
-Route::get('/members/{id}', [MembersController::class,'ShowMemberDetails'])->name('members.profile');
-Route::delete('/members/{id}', [MembersController::class,'deleteMemberDetails'])->name('membersdelete.delete');
+    Route::get('/members/{id}', [MembersController::class, 'ShowMemberDetails'])->name('members.profile');
+    Route::delete('/members/{id}', [MembersController::class, 'deleteMemberDetails'])->name('membersdelete.delete');
 
-Route::put('/members/{id}', [MembersController::class,'weightUpdate'])->name('weight.update');
+    Route::put('/members/{id}', [MembersController::class, 'weightUpdate'])->name('weight.update');
 
-Route::put('/members/{id}/status', [MembersController::class, 'statusUpdate'])->name('memberstatus.update');
-
-
-//Route::post('/members/{id}', [ExerciseController::class, 'addtype'])->name('scheduletype.add');
+    Route::put('/members/{id}/status', [MembersController::class, 'statusUpdate'])->name('memberstatus.update');
 
 
-//Route::post('/members/{id}', [Members_schedulesController::class, 'insertSchedule'])->name('updateshedule.insert');
-
-Route::get('/members/{id}/edit', [MembersController::class,'EditMember'])->name('members.edit');
-
-Route::put('/members/{id}/edit', [MembersController::class,'EditMemberDetails'])->name('update.data');
-
-Route::get('/scheduletypes', [ExerciseController::class, 'index'])->name('scheduletype.insert');
-
-Route::post('/scheduletypes', [ExerciseController::class, 'addtype'])->name('exersice.add');
-
-Route::get('/scheduletypes', [ExerciseController::class, 'getScheculeType'])->name('scheduletype.insert');
-Route::delete('/scheduletypes/{id}', [schedules_typesController::class, 'destroySchdulegroup'])->name('scheduletype.delete');
-Route::post('/scheduletypes/group', [schedules_typesController::class, 'storeSchedulesTypes'])->name('schedulegroup.data');
-
-//Route::get('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'memberscheduleEditpage'])->name('memberscheduleedit.show');
-
-Route::get('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'memberscheduleEditpage'])->name('memberscheduleedit.show');
-
-Route::post('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'storeSchedule'])->name('updateshedulemember.insert');
-
-//Route::post('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'storeSchedule'])->name('updateshedule.insert');
-
-//Route::put('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleUpdate'])->name('memberScheduleedit.update');
-
-Route::delete('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleDelete'])->name('memberscheduleeditpagedelete.delete');
-
-Route::delete('/members/{id}/schedule/{scheduleid}', [Members_schedulesController::class, 'memberscheduleDelete'])->name('memberscheduledelete.delete');
-
-Route::get('/members/{id}/schedule', [SchedulesController::class, 'memberAllscheduleDelete'])->name('memberallscheduledelete.delete');
-
-Route::get('/members/{id}/generatepdf', [memberScheduleListController::class,'memberScheduleList'])->name('memberschedulelist.data');
-
-Route::get('/members/{id}/payment', [PaymentsController::class,'ShowPaymentPage'])->name('paymentpage.data');
-Route::post('/members/{id}/payment', [PaymentsController::class,'addPayment'])->name('paymentpage.insert');
-Route::get('/members/{id}/payment/{month}', [PaymentsController::class,'deletePaymentPage'])->name('paymentpage.delete');
-Route::delete('/members/{id}/payment/{payment}', [PaymentsController::class,'deletePaymentPageAnnual'])->name('paymentpageAnnual.delete');
-Route::get('/members/{id}/attendance', [AttendanceController::class,'show'])->name('attendance.show');
-//Route::post('/members/{id}/attendance', [AttendanceController::class,'markAttendance'])->name('attendance.insert');
-
-Route::get('/attendancereport', function (Request $request) {
-
-    $members = Members::all();
-
-    
-    $userAttendance = Attendance::all()->where('member_id',$request->input('memberid'));
-
-    return view('attendancereport',compact('members','userAttendance'));
-})->name('attendancereport.show');
+    //Route::post('/members/{id}', [ExerciseController::class, 'addtype'])->name('scheduletype.add');
 
 
+    //Route::post('/members/{id}', [Members_schedulesController::class, 'insertSchedule'])->name('updateshedule.insert');
 
-Route::post('/attendancereport', function (Request $request) {
+    Route::get('/members/{id}/edit', [MembersController::class, 'EditMember'])->name('members.edit');
 
-    $members = Members::all();
+    Route::put('/members/{id}/edit', [MembersController::class, 'EditMemberDetails'])->name('update.data');
 
-    $request->validate([
-        'startdate' => 'required|date',
-        'enddate' => 'required|date|after_or_equal:startdate',
-        'memberid' => [
-            'required',
-            Rule::in($members->pluck('id')->toArray())
-        ],
-    ]);
+    Route::get('/scheduletypes', [ExerciseController::class, 'index'])->name('scheduletype.insert');
 
-    $memberId = $request->input('memberid');
-    $startDate = $request->input('startdate');
-    $endDate = $request->input('enddate');
+    Route::post('/scheduletypes', [ExerciseController::class, 'addtype'])->name('exersice.add');
 
-    $userAttendance = Attendance::join('members', 'attendances.member_id', '=', 'members.id')
-        ->select('attendances.*', 'members.name as name')
-        ->where('attendances.member_id', $memberId)
-        ->whereBetween('attendances.attendancedate', [$startDate, $endDate]) // Use the correct date column name
-        ->orderBy('attendances.attendancedate', 'asc')
-        ->get();
+    Route::get('/scheduletypes', [ExerciseController::class, 'getScheculeType'])->name('scheduletype.insert');
+    Route::delete('/scheduletypes/{id}', [schedules_typesController::class, 'destroySchdulegroup'])->name('scheduletype.delete');
+    Route::post('/scheduletypes/group', [schedules_typesController::class, 'storeSchedulesTypes'])->name('schedulegroup.data');
 
-        
+    //Route::get('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'memberscheduleEditpage'])->name('memberscheduleedit.show');
 
-    return view('attendancereport', compact('members', 'userAttendance'));
-})->name('attendancereport1.show');
+    Route::get('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'memberscheduleEditpage'])->name('memberscheduleedit.show');
 
+    Route::post('/members/{id}/editschedule/{scheduleid}', [MembersController::class, 'storeSchedule'])->name('updateshedulemember.insert');
 
-Route::get('/paymentreport', function (Request $request) {
+    //Route::post('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'storeSchedule'])->name('updateshedule.insert');
 
-    $members = Members::all();
-    $allusers = $request->input('allusers');
-    if($allusers == 1){
+    //Route::put('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleUpdate'])->name('memberScheduleedit.update');
 
-        $payments =Payments::all();
+    Route::delete('/members/{id}/editschedule/{scheduleid}', [SchedulesController::class, 'memberscheduleDelete'])->name('memberscheduleeditpagedelete.delete');
 
-    }else{
+    Route::delete('/members/{id}/schedule/{scheduleid}', [Members_schedulesController::class, 'memberscheduleDelete'])->name('memberscheduledelete.delete');
 
-        
+    Route::get('/members/{id}/schedule', [SchedulesController::class, 'memberAllscheduleDelete'])->name('memberallscheduledelete.delete');
 
-        $payments =Payments::all()->where('member_id',$request->input('memberid'));
-    }
-    $testvalue =1;
-    return view('paymentreport',compact('members','payments','testvalue'));
-})->name('paymentreport.show');
+    Route::get('/members/{id}/generatepdf/{scheduleid}', [memberScheduleListController::class, 'memberScheduleList'])->name('memberschedulelist.data');
+
+    Route::get('/members/{id}/payment', [PaymentsController::class, 'ShowPaymentPage'])->name('paymentpage.data');
+    Route::post('/members/{id}/payment', [PaymentsController::class, 'addPayment'])->name('paymentpage.insert');
+    Route::get('/members/{id}/payment/{month}', [PaymentsController::class, 'deletePaymentPage'])->name('paymentpage.delete');
+    Route::delete('/members/{id}/payment/{payment}', [PaymentsController::class, 'deletePaymentPageAnnual'])->name('paymentpageAnnual.delete');
+    Route::get('/members/{id}/attendance', [AttendanceController::class, 'show'])->name('attendance.show');
+    //Route::post('/members/{id}/attendance', [AttendanceController::class,'markAttendance'])->name('attendance.insert');
+
+    Route::get('/attendancereport', function (Request $request) {
+
+        $members = Members::all();
 
 
-Route::post('/paymentreport', function (Request $request) {
+        $userAttendance = Attendance::all()->where('member_id', $request->input('memberid'));
 
-    $members = Members::all();
+        return view('attendancereport', compact('members', 'userAttendance'));
+    })->name('attendancereport.show');
 
-    $validatedData = $request->validate([
-        'memberid' => [
-            'nullable', // memberid is optional
-            Rule::in($members->pluck('id')->toArray()) // Validates only if provided
-        ],
-        'allusers' => 'nullable|boolean', // allusers is optional but should be a boolean if provided
-        // Ensure at least one of the fields is present
-        'memberid' => 'required_without:allusers',
-        'allusers' => 'required_without:memberid',
 
-        'startdate' => 'required|date',
-        'enddate' => 'required|date|after_or_equal:startdate',
-    ]);
 
-    // Retrieve input values
-    $memberId = $request->input('memberid');
-    $testvalue = $request->input('testvalue');
-    $allusers = $request->input('allusers');
-    $startDate1 = $request->input('startdate');
-    $endDate1 = $request->input('enddate');
+    Route::post('/attendancereport', function (Request $request) {
 
-    // Build the query based on input
-    if ($allusers) {
-        // Fetch all payments if allusers is selected
-        $payments = Payments::join('members', 'payments.member_id', '=', 'members.id')
-            ->select('payments.*', 'members.name as name')
-            ->whereBetween('payments.created_at', [$startDate1, $endDate1]) // Use the correct date column name
-        ->orderBy('payments.member_id', 'asc')
+        $members = Members::all();
+
+        $request->validate([
+            'startdate' => 'required|date',
+            'enddate' => 'required|date|after_or_equal:startdate',
+            'memberid' => [
+                'required',
+                Rule::in($members->pluck('id')->toArray())
+            ],
+        ]);
+
+        $memberId = $request->input('memberid');
+        $startDate = $request->input('startdate');
+        $endDate = $request->input('enddate');
+
+        $userAttendance = Attendance::join('members', 'attendances.member_id', '=', 'members.id')
+            ->select('attendances.*', 'members.name as name')
+            ->where('attendances.member_id', $memberId)
+            ->whereBetween('attendances.attendancedate', [$startDate, $endDate]) // Use the correct date column name
+            ->orderBy('attendances.attendancedate', 'asc')
             ->get();
-    } else {
-        // Fetch payments for a specific member
+
+
+
+        return view('attendancereport', compact('members', 'userAttendance'));
+    })->name('attendancereport1.show');
+
+
+    Route::get('/paymentreport', function (Request $request) {
+
+        $members = Members::all();
+        $allusers = $request->input('allusers');
+        if ($allusers == 1) {
+
+            $payments = Payments::all();
+
+        } else {
+
+
+
+            $payments = Payments::all()->where('member_id', $request->input('memberid'));
+        }
+        $testvalue = 1;
+        return view('paymentreport', compact('members', 'payments', 'testvalue'));
+    })->name('paymentreport.show');
+
+
+    Route::post('/paymentreport', function (Request $request) {
+
+        $members = Members::all();
+
+        $validatedData = $request->validate([
+            'memberid' => [
+                'nullable', // memberid is optional
+                Rule::in($members->pluck('id')->toArray()) // Validates only if provided
+            ],
+            'allusers' => 'nullable|boolean', // allusers is optional but should be a boolean if provided
+            // Ensure at least one of the fields is present
+            'memberid' => 'required_without:allusers',
+            'allusers' => 'required_without:memberid',
+
+            'startdate' => 'required|date',
+            'enddate' => 'required|date|after_or_equal:startdate',
+        ]);
+
+        // Retrieve input values
+        $memberId = $request->input('memberid');
+        $testvalue = $request->input('testvalue');
+        $allusers = $request->input('allusers');
+        $startDate1 = $request->input('startdate');
+        $endDate1 = $request->input('enddate');
+
+        // Build the query based on input
+        if ($allusers) {
+            // Fetch all payments if allusers is selected
+            $payments = Payments::join('members', 'payments.member_id', '=', 'members.id')
+                ->select('payments.*', 'members.name as name')
+                ->whereBetween('payments.created_at', [$startDate1, $endDate1]) // Use the correct date column name
+                ->orderBy('payments.member_id', 'asc')
+                ->get();
+        } else {
+            // Fetch payments for a specific member
+            $payments = Payments::join('members', 'payments.member_id', '=', 'members.id')
+                ->select('payments.*', 'members.name as name')
+                ->where('payments.member_id', $memberId)
+                ->get();
+        }
+
+
+
+        return view('paymentreport', compact('members', 'payments', 'testvalue', 'allusers', 'startDate1', 'endDate1'));
+    })->name('userpaymentreport.show');
+
+    Route::get('/paymentreport/{id}/generatepdf', function (Request $request, $id) {
+
+
+        $memberId = $id;
+
         $payments = Payments::join('members', 'payments.member_id', '=', 'members.id')
             ->select('payments.*', 'members.name as name')
             ->where('payments.member_id', $memberId)
             ->get();
-    }
 
-      
+        $data = [
 
-    return view('paymentreport',compact('members','payments','testvalue','allusers','startDate1','endDate1'));
-})->name('userpaymentreport.show');
-
-Route::get('/paymentreport/{id}/generatepdf', function (Request $request,$id) {
-
-  
-    $memberId = $id;
-
-    $payments =Payments::join('members', 'payments.member_id', '=', 'members.id')
-        ->select('payments.*', 'members.name as name')
-        ->where('payments.member_id', $memberId)
-        ->get();
-
-        $data=[
-           
-            'payments'=> $payments
+            'payments' => $payments
 
         ];
 
-        $pdf = Pdf::loadView('Pdf.memberpaymentreportpdf',$data);
+        $pdf = Pdf::loadView('Pdf.memberpaymentreportpdf', $data);
         return $pdf->stream('invoice.pdf');
-})->name('userpaymentreportpdf.show');
+    })->name('userpaymentreportpdf.show');
 
-Route::get('/paymentreport/generatepdf/all', function (Request $request) {
+    Route::get('/paymentreport/generatepdf/all', function (Request $request) {
 
-    $startDate = $request->input('startdate');
-    $endDate = $request->input('enddate');
+        $startDate = $request->input('startdate');
+        $endDate = $request->input('enddate');
 
 
-    $payments = Payments::join('members', 'payments.member_id', '=', 'members.id')
-    ->select('payments.*', 'members.name as name')
-   ->whereBetween('payments.created_at', [$startDate, $endDate]) // Use the correct date column name
-->orderBy('payments.member_id', 'asc')
-    ->get();
+        $payments = Payments::join('members', 'payments.member_id', '=', 'members.id')
+            ->select('payments.*', 'members.name as name')
+            ->whereBetween('payments.created_at', [$startDate, $endDate]) // Use the correct date column name
+            ->orderBy('payments.member_id', 'asc')
+            ->get();
 
-        $data=[
-           
-            'payments1'=> $payments
+        $data = [
+
+            'payments1' => $payments
 
         ];
 
-        $pdf = Pdf::loadView('Pdf.alluserspaymentreport',$data);
+        $pdf = Pdf::loadView('Pdf.alluserspaymentreport', $data);
         return $pdf->stream('payment.pdf');
-        
-})->name('alluserpaymentreportpdf.show');
+
+    })->name('alluserpaymentreportpdf.show');
 
 
+    Route::get('/auth/login', [RegisteredUserController::class, 'showUserLogin'])->name('loginshow.page');
 
-Route::get('/auth/login',[RegisteredUserController::class,'showUserLogin'])->name('loginshow.page');
 
+    Route::get('/auth/registration', function () {
 
-Route::get('/auth/registration',function(){
+        return view('registrationpage');
 
-    return view('registrationpage');
-    
     })->name('registration.page');
 
-    Route::post('/auth/registration', [RegisteredUserController::class,'AfterLoginstore'])->name('user.insert');
+    Route::post('/auth/registration', [RegisteredUserController::class, 'AfterLoginstore'])->name('user.insert');
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

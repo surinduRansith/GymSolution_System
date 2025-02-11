@@ -58,7 +58,7 @@
 
       @if(!empty($countofexercises[$index]->nooftime))
 
-      <a href="{{route('memberschedulelist.data',['id' => $schedule->member_id])}}" class="btn btn-sm btn-warning " ><i class="lni lni-download"></i></a>
+      <a href="{{route('memberschedulelist.data',['id' => $schedule->member_id, 'scheduleid' => $schedule->scheduleType_id])}}" class="btn btn-sm btn-warning " ><i class="lni lni-download"></i></a>
 
       @endif
 </div> 

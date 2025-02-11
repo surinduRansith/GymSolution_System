@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 
 class memberScheduleListController extends Controller
 {
-    public function memberScheduleList($id ){
+    public function memberScheduleList($id ,$scheduleid){
 
         $membersName=Members::all()->where('id',$id);
 
         $member = Schedules::join('members', 'schedules.member_id', '=', 'members.id')
             ->join('schedules_types', 'schedules.scheduleType_id', '=', 'schedules_types.id')
             ->select('schedules.*','members.name as name','schedules.noofsets','schedules.nooftime', 'schedules_types.scheduleName as scheduleName' )->where('schedules.member_id', $id)
+            ->where('schedules.scheduleType_id', $scheduleid)
             ->get();
 
           
@@ -26,6 +27,7 @@ class memberScheduleListController extends Controller
         ];
 
         $pdf = Pdf::loadView('Pdf.memberschedulelist', $data);
-    return $pdf->stream('invoice.pdf');
+        
+    return $pdf->stream('Shcedule.pdf');
     }
 }
